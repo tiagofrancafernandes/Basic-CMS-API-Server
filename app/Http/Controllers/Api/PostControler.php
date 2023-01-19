@@ -87,7 +87,7 @@ class PostControler extends Controller
         $request->validate([
             'title' => 'required|string|min:2',
             'content.*' => 'required|string|min:2',
-            'tags' => 'required|string|min:2',
+            'tags' => 'nullable|string|min:2',
             'status' => 'required|integer|in:' . implode(',', [
                 Post::STATUS_DRAFT,
                 Post::STATUS_PUBLISHED,
@@ -105,7 +105,9 @@ class PostControler extends Controller
             'status',
         ]);
 
-        $postData['tags'] = \explode(',', $postData['tags']);
+        if ($postData['tags'] ?? \null) {
+            $postData['tags'] = \explode(',', $postData['tags']);
+        }
 
         $updatedPost = $post->update($postData);
 

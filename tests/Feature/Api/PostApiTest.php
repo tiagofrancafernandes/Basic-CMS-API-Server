@@ -179,27 +179,17 @@ class PostApiTest extends TestCase
      */
     public function updatePost(): void
     {
-        $postData = Post::factory()->make()->toArray();
-        $postData['tags'] = 'abc,def';
-        $postData['status'] = Post::STATUS_PUBLISHED;
+        $postData = Post::factory()->createOne([
+            'status' => Post::STATUS_PUBLISHED,
+        ]);
 
-        $response = $this->post(
-            route('api.posts.store'),
-            $postData
-        );
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'created' => true,
-            ])
-            ->assertJsonPath('post.title', $postData['title']);
-
-        $newPostData = $postData;
-        $newPostData['title'] = 'New title of post';
+        $newPostData = [
+            'title' => 'New title of post',
+            'status' => Post::STATUS_PUBLISHED,
+        ];
 
         $response = $this->patch(
-            route('api.posts.update', $postData['slug']),
+            route('api.posts.update', $postData->slug),
             $newPostData
         );
 
@@ -219,28 +209,16 @@ class PostApiTest extends TestCase
      */
     public function deletePost(): void
     {
-        $postData = Post::factory()->make()->toArray();
-        $postData['tags'] = 'abc,def';
-        $postData['status'] = Post::STATUS_PUBLISHED;
+        $postData = Post::factory()->createOne();
 
-        $response = $this->post(
-            route('api.posts.store'),
-            $postData
+        $response = $this->get(
+            route('api.posts.show', $postData->slug),
         );
 
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'created' => true,
-            ])
-            ->assertJsonPath('post.title', $postData['title']);
-
-        $newPostData = $postData;
-        $newPostData['title'] = 'New title of post';
+        $response->assertStatus(200);
 
         $response = $this->delete(
-            route('api.posts.destroy', $postData['slug']),
-            $newPostData
+            route('api.posts.destroy', $postData->slug)
         );
 
         $response
