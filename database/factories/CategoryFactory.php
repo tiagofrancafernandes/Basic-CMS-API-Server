@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Tests\Helpers\TestStr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => \ucfirst(\fake()->words(rand(1, 3), true)),
-            'slug' =>  fn ($attributes) => \Str::slug($attributes['name']),
+            'name' => fn ($attr) => TestStr::addRandom(),
+            'slug' =>  fn ($attr) => Str::slug('factory ' . $attr['name']),
             'parent_id' => \null,
         ];
     }

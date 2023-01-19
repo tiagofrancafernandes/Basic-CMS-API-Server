@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Api;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 use App\Models\Post;
+use Tests\Helpers\TestStr;
+use Illuminate\Testing\Fluent\AssertableJson;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PostApiTest extends TestCase
 {
@@ -18,10 +19,12 @@ class PostApiTest extends TestCase
      */
     public function postIndex()
     {
-        Post::factory([
-            'title' => 'My first post',
+        $title = TestStr::addRandom('My first post');
+
+        Post::factory()->createOne([
+            'title' => $title,
             'status' => Post::STATUS_PUBLISHED,
-        ])->createOne();
+        ]);
 
         $postStatuses = [
             Post::STATUS_DRAFT,
@@ -31,7 +34,7 @@ class PostApiTest extends TestCase
 
         foreach ($postStatuses as $statusKey => $statusValue) {
             Post::factory(2)->create([
-                'title' => \fake()->words(rand(3, 8), true),
+                'title' => fn () => TestStr::addRandom('postIndex'),
                 'status' => $statusKey,
                 'tags' => ['food', 'delivery']
             ]);
@@ -50,7 +53,7 @@ class PostApiTest extends TestCase
                 ->has(
                     'data.0',
                     fn (AssertableJson $json) => $json->where('id', 1)
-                    ->where('title', 'My first post')
+                    ->where('title', $title)
                     ->where('status', 1)
                     ->hasAll(['tags'])->etc()
                     // ->where('author', fn ($author) => str($author)->is('Victoria'))

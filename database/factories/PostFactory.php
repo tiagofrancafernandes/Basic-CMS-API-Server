@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Post;
+use Tests\Helpers\TestStr;
+use Illuminate\Support\Str;
 use Database\Seeders\CategorySeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,8 +21,8 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => \ucfirst(\fake()->words(rand(3, 8), true)),
-            'slug' =>  \fake()->unique(maxRetries: 300)->slug,
+            'title' => fn ($attr) => TestStr::addRandom(),
+            'slug' =>  fn ($attr) => Str::slug('factory ' . $attr['title']),
             'content' => \fake()->paragraphs(4),
             'tags' => (rand() % 2) ? \fake()->words(rand(1, 8)) : [],
             'published_at' => now(),

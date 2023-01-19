@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Web;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Post;
+use Tests\Helpers\TestStr;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PostWebTest extends TestCase
 {
@@ -17,8 +18,10 @@ class PostWebTest extends TestCase
      */
     public function postIndex()
     {
+        $title = TestStr::addRandom('My first post');
+
         Post::factory([
-            'title' => 'My first post',
+            'title' => $title,
             'status' => Post::STATUS_PUBLISHED,
         ])->createOne();
 
@@ -30,7 +33,6 @@ class PostWebTest extends TestCase
 
         foreach ($postStatuses as $statusKey => $statusValue) {
             Post::factory(2)->create([
-                'title' => \fake()->words(rand(3, 8), true),
                 'status' => $statusKey,
             ]);
         }
@@ -40,6 +42,6 @@ class PostWebTest extends TestCase
         );
 
         $response->assertSee('<h1>Posts</h1>', $escaped = false);
-        $response->assertSee('<td>My first post</td>', $escaped = false);
+        $response->assertSee("<td>{$title}</td>", $escaped = false);
     }
 }

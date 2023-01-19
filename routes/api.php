@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostControler;
 use App\Http\Controllers\Api\CategoryControler;
 
-Route::middleware('auth:sanctum')->get('/user', fn (Request $request) => $request->user());
+Route::middleware(['auth:sanctum'])->get('/user', fn (Request $request) => $request->user());
 
 Route::name('api.')->group(function () {
     Route::prefix('posts')->name('posts.')->group(function () {

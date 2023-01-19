@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Post;
+use Tests\Helpers\TestStr;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -32,10 +33,12 @@ class PostSeeder extends Seeder
         ];
 
         foreach (\array_flip($postStatuses) as $statusKey) {
-            Post::factory($countForType ?: 10)->create([
-                'title' => \fake()->words(rand(3, 8), true),
-                'status' => $statusKey,
-            ]);
+            Post::factory($countForType ?: 10)->create(
+                [
+                    'title' => fn () => TestStr::addRandom(wordsToCreate: 4),
+                    'status' => $statusKey,
+                ]
+            );
         }
     }
 }

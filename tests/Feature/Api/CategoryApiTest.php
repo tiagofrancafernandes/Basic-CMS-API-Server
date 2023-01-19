@@ -22,9 +22,9 @@ class CategoryApiTest extends TestCase
     {
         $name = 'My first category categoryIndex';
 
-        $categoryData = Category::factory([
+        $categoryData = Category::factory()->createOne([
             'name' => $name,
-        ])->createOne();
+        ]);
 
         Category::factory(2)->create();
 
@@ -34,7 +34,7 @@ class CategoryApiTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonPath('data.0.name', $name);
-        $response->assertJsonPath('data.0.slug', Str::slug($name));
+        $response->assertJsonPath('data.0.slug', Str::slug('factory ' . $name));
 
         $response->assertJson(
             fn (AssertableJson $json) =>
