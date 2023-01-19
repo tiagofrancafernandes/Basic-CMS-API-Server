@@ -19,3 +19,12 @@ yarn-error.log
 _ide_helper.php
 _ide_*
 .phpstorm.meta.php
+_ide_helper.php
+_ide_*
+.phpstorm.meta.php
+
+*.ignore*
+*ignore.*
+
+.env.dusk.*
+!.env.dusk.*.example

@@ -20,5 +20,42 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $devEnvs = config('app-plus.seeders.envs.dev');
+        $prodEnvs = config('app-plus.seeders.envs.prod');
+
+        $seeders = [
+            CategorySeeder::class => [
+                'run_in_envs' => $devEnvs,
+            ],
+            PostSeeder::class => [
+                'run_in_envs' => $devEnvs,
+            ],
+        ];
+
+        foreach ($seeders as $seederClass => $info) {
+            if (
+                \in_array(
+                    $seederClass,
+                    config('app-plus.seeders.disabled_seeders', []),
+                    true
+                ) ||
+                (
+                    ($info['run_in_envs'] ?? []) &&
+                    !app()->environment($info['run_in_envs'] ?? []))
+            ) {
+                return;
+            }
+
+            \dump(
+                \sprintf('%s %s', ...[
+                    'Seeding...',
+                    $seederClass,
+                ])
+            );
+
+            $this->call($seederClass);
+        }
+
     }
 }
