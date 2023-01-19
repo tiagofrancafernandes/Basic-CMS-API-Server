@@ -28,3 +28,9 @@ _ide_*
 
 .env.dusk.*
 !.env.dusk.*.example
+_ide_helper.php
+_ide_*
+.phpstorm.meta.php
+_ide_helper.php
+_ide_*
+.phpstorm.meta.php

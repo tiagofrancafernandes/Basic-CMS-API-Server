@@ -75,7 +75,8 @@
     },
     "notPath": [
         "path/to/excluded-file.php",
-        "_dev_dir"
+        "_dev_dir",
+        "vendor"
     ],
     "notName": [
         "*-my-file.php"

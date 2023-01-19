@@ -42,7 +42,8 @@ class DatabaseSeeder extends Seeder
                 ) ||
                 (
                     ($info['run_in_envs'] ?? []) &&
-                    !app()->environment($info['run_in_envs'] ?? []))
+                    !app()->environment($info['run_in_envs'] ?? [])
+                )
             ) {
                 return;
             }
@@ -56,6 +57,5 @@ class DatabaseSeeder extends Seeder
 
             $this->call($seederClass);
         }
-
     }
 }

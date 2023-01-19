@@ -3,8 +3,8 @@
 return [
     'seeders' => [
         'envs' => [
-            'dev' => ['local', 'dev', 'stage',],
-            'prod' => ['production',],
+            'dev' => ['local', 'dev', 'stage', ],
+            'prod' => ['production', ],
         ],
 
         'disabled_seeders' => array_filter(

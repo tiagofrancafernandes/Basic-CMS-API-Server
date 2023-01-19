@@ -137,7 +137,6 @@ class PostApiTest extends TestCase
         $postData['tags'] = 'abc,def';
         $postData['status'] = Post::STATUS_PUBLISHED;
 
-
         $response = $this->postJson(
             route('api.posts.store'),
             $postData
